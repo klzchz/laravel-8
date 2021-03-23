@@ -1,12 +1,19 @@
-<h2>{{$post->title}}</h2>
+@extends('admin.layouts.app')
 
-<p>
-{{$post->content}}
-</p><br/>
+@section('title','Editando :'.$post->title)
 
-<form action="{{route('posts.destroy',$post->id)}}" method="POST">
-    @method('DELETE')
-    @csrf
-    <button type="submit">Deletar o Post {{$post->id}}</button>
+@section('content')
+    <h2>{{$post->title}}</h2>
 
-</form>
+    <p>
+        {{$post->content}}
+    </p><br/>
+
+    <form action="{{route('posts.destroy',$post->id)}}" method="POST">
+        @method('DELETE')
+        @csrf
+        <button type="submit">Deletar o Post {{$post->id}}</button>
+
+    </form>
+
+@endsection

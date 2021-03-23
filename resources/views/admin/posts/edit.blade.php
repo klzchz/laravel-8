@@ -1,8 +1,14 @@
-<h2>Editando Post</h2>
+@extends('admin.layouts.app')
 
+@section('title','Editando Posts')
 
-<form action="{{route('posts.update',$post->id)}}" method="post">
-    @csrf
-    @method('PUT')
-   @include('admin.posts.partials._form')
-</form>
+@section('content')
+    <h2>Editando Post</h2>
+
+    <form action="{{route('posts.update',$post->id)}}" method="post">
+        @csrf
+        @method('PUT')
+        @include('admin.posts.partials._form')
+    </form>
+
+@endsection
