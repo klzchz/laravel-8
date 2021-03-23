@@ -7,6 +7,12 @@
     </div>
 @endif
 
+<form action="{{route('posts.search')}}" method="post">
+    @csrf
+    <input type="text" name="search" placeholder="Filtrar" :>
+    <button type="submit">Filtrar</button>
+</form>
+
 <table>
     <tr>
         <th>Title</th>
@@ -23,5 +29,10 @@
         @endforeach
 
 </table>
+@if(isset($filters))
+    {{$posts->appends($filters)->links()}}
+@else
+    {{$posts->links()}}
+@endif
 
-{{$posts->links()}}
+

@@ -13,7 +13,7 @@ class PostController extends Controller
 
     public function __construct(Post $post){
         $this->post = $post;
-        $this->page = 15;
+        $this->page = 1;
     }
 
 
@@ -90,6 +90,17 @@ class PostController extends Controller
         return redirect()
             ->route('posts.index')
             ->with('message','Post Atualizado com Sucesso');
+    }
+
+    public function search(Request $request)
+    {
+        $filters = $request->except('_token');
+
+        $posts = Post::where('title','LIKE',"%{$request->search}%")
+                        ->orWhere('content','LIKE',"%{$request->search}%")
+                        ->paginate($this->page);
+
+        return view('admin.posts.index',compact('posts','filters'));
     }
 
 
