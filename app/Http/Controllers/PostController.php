@@ -42,4 +42,27 @@ class PostController extends Controller
 
 
     }
+
+    public function show($id)
+    {
+        $post = $this->post->find($id);
+
+        if(!$post)
+                return redirect()->back();
+
+        return view('admin.posts.show',compact('post'));
+    }
+
+    public function destroy($id)
+    {
+        $post = $this->post->find($id);
+
+        if(!$post)
+            return redirect()->route('posts.index')->withErrors('Erro ao Deletar');
+
+        $post->delete();
+
+        return redirect()->route('posts.index')->with('message','Post Deletado com Sucesso !');
+
+    }
 }
