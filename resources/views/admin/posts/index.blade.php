@@ -11,15 +11,17 @@
     <tr>
         <th>Title</th>
         <th>Content</th>
-        <th>Ver</th>
+        <th>Ação</th>
     </tr>
 
         @foreach($posts as $post)
         <tr>
         <td>{{$post->title}}</td>
         <td>{{$post->content}}</td>
-        <td><a href="{{route('posts.show',$post->id)}}">Ver</a></td>
+        <td><a href="{{route('posts.show',$post->id)}}">(Ver)</a> <a href="{{route('posts.edit',$post->id)}}">(Edit)</a></td>
         </tr>
         @endforeach
 
 </table>
+
+{{$posts->links()}}

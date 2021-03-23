@@ -9,15 +9,17 @@ use App\Models\Post;
 class PostController extends Controller
 {
     private $post;
+    protected $page;
 
     public function __construct(Post $post){
         $this->post = $post;
+        $this->page = 15;
     }
 
 
     public function index()
     {
-        $posts = $this->post->all();
+        $posts = $this->post->latest()->paginate($this->page);
         return view('admin.posts.index',compact('posts'));
     }
 
@@ -65,4 +67,30 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('message','Post Deletado com Sucesso !');
 
     }
+    public function  edit($id)
+    {
+        $post = $this->post->find($id);
+
+        if(!$post)
+            return redirect()->back();
+
+        return view('admin.posts.edit',compact('post'));
+    }
+
+    public function update(StoreUpdatePost  $request,$id)
+    {
+
+        $post = $this->post->find($id);
+
+        if(!$post)
+            return redirect()->back();
+
+        $post->update($request->all());
+
+        return redirect()
+            ->route('posts.index')
+            ->with('message','Post Atualizado com Sucesso');
+    }
+
+
 }
