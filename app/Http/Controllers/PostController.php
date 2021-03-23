@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdatePost;
 use Illuminate\Http\Request;
 use App\Models\Post;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -34,6 +35,14 @@ class PostController extends Controller
                 'title'=>$request->title,
                 'content'=>$request->content
             ];
+            if($request->file('image')){
+
+                $nameFile = Str::of($request->image)->slug('-').'.'.$request->image->extension();
+
+                $image =  $request->image->storeAs('posts',$nameFile);
+                $dataForm['image'] = $image;
+
+            }
 
             $response =$this->post->create($dataForm);
 
@@ -41,7 +50,6 @@ class PostController extends Controller
                     return redirect()->route('posts.index')->withSucces('Post Criado com Sucesso');
             else
                 return redirect()->route('posts.create')->withSucces('Falha ao Cadastrar Post');
-
 
     }
 
@@ -84,8 +92,20 @@ class PostController extends Controller
 
         if(!$post)
             return redirect()->back();
+            $data = $request->all();
 
-        $post->update($request->all());
+        if ($request->image && $request->image->isValid()) {
+            if (Storage::exists($post->image))
+                Storage::delete($post->image);
+
+            $nameFile = Str::of($request->title)->slug('-') . '.' .$request->image->getClientOriginalExtension();
+
+            $image = $request->image->storeAs('posts', $nameFile);
+            $data['image'] = $image;
+        }
+
+
+        $post->update($data);
 
         return redirect()
             ->route('posts.index')

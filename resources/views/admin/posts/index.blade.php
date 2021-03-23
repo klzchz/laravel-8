@@ -20,16 +20,22 @@
 
     <table>
         <tr>
-            <th>Title</th>
-            <th>Content</th>
-            <th>Ação</th>
+            <thead>
+            <th>Imagem</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Ação</th>
+
+            </thead>
         </tr>
 
         @foreach($posts as $post)
             <tr>
+                <td width="200"><img src="{{url('storage/'.$post->image)}}"></td>
                 <td>{{$post->title}}</td>
                 <td>{{$post->content}}</td>
                 <td><a href="{{route('posts.show',$post->id)}}">(Ver)</a> <a href="{{route('posts.edit',$post->id)}}">(Edit)</a></td>
+
             </tr>
         @endforeach
 
